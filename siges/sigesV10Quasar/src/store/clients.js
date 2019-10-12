@@ -113,7 +113,6 @@ const getters = {
         //console.log('authUserCompanyClientLocationsSorted: ', authUserCompanyClientLocationsSorted)
         if (state.searchLocations) {
             Object.keys(authUserCompanyClientLocationsSorted).forEach((key) => {
-<<<<<<< HEAD
                 console.log('Sorted: ', authUserCompanyClientLocationsSorted[key])
                 let location = authUserCompanyClientLocationsSorted[key],
                 locationLine1LowerCase = (location.description).toLowerCase(),
@@ -125,37 +124,16 @@ const getters = {
                 // console.log(clientNameLowerCase.includes(searchLowerCase))
 
                 if (locationLine1LowerCase.includes(searchLowerCase) || locationLine2LowerCase.includes(searchLowerCase) || locationLine3LowerCase.includes(searchLowerCase) || locationLine4LowerCase.includes(searchLowerCase) || locationLine5LowerCase.includes(searchLowerCase)) {
-=======
-                console.log('key: ', key)
-                console.log('Sorted: ', authUserCompanyClientLocationsSorted[key])
-                let 
-                    location = authUserCompanyClientLocationsSorted[key],
-                    locationLine1LowerCase = (location.description).toLowerCase(),
-                    locationLine2LowerCase = (location.address + ', ' + location.building + ' ' + location.building_comments + ' - ' + location.neighborhood).toLowerCase(),
-                    locationLine3LowerCase = (location.city + '/' + location.state + ' - CEP: ' + location.zip_code).toLowerCase(),
-                    locationLine4LowerCase = (location.email).toLowerCase(),
-                    locationLine5LowerCase = (location.mobile + ', ' + location.phone).toLowerCase(),
-                    searchLowerCase = state.searchLocations.toLowerCase() 
+
+                    console.log('key: ', key)
+                    console.log('Sorted: ', authUserCompanyClientLocationsSorted[key])
                     
-                    console.log("Ylocation: ", location)
-              
-                if (locationLine1LowerCase.includes(searchLowerCase) || 
-                locationLine2LowerCase.includes(searchLowerCase) || 
-                locationLine3LowerCase.includes(searchLowerCase) || 
-                locationLine4LowerCase.includes(searchLowerCase) || 
-                locationLine5LowerCase.includes(searchLowerCase)) {
-                    console.log('Filtered: ', authUserCompanyClientLocationsFiltered[key])
->>>>>>> 312bdc0699727d0fddfbf32db67144a34a96cce9
                     authUserCompanyClientLocationsFiltered[key] = location
-                    console.log("Xlocation: ", location)
-                }
-            })
-<<<<<<< HEAD
+                        console.log("Xlocation: ", location)
+                    }
+                })
+
             console.log('Filtered: ', authUserCompanyClientLocationsFiltered)
-=======
-            
-            console.log("filtered: ", authUserCompanyClientLocationsFiltered)
->>>>>>> 312bdc0699727d0fddfbf32db67144a34a96cce9
             return authUserCompanyClientLocationsFiltered
         }
         return authUserCompanyClientLocationsSorted
