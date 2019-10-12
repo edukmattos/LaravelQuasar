@@ -1,0 +1,8 @@
+<?php
+
+    Route::get('/test', function() {
+        return "Test";
+    });
+
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');

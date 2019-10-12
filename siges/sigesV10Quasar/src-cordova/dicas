@@ -1,0 +1,8 @@
+export ANDROID_HOME=~/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+//Emulador
+quasar dev -m cordova -T android
+
+//Apk
+quasar build -m cordova -T android
