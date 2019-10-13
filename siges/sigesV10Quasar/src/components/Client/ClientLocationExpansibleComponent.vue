@@ -36,19 +36,27 @@
       </q-item-section>
     </template>
     
-    <q-card>
-      Teste {{ id }} {{ location.description }}
-    </q-card>
+    <q-card class="my-card">
+      <map-component 
+        :location="location"  
+      />
 
+      <q-card-actions align="around">
+        <q-btn flat round color="red" icon="favorite" />
+        <q-btn flat round color="teal" icon="bookmark" />
+        <q-btn flat round color="primary" icon="share" />
+      </q-card-actions>
+    </q-card>
+    
   </q-expansion-item>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
+
   export default {
     data() {
-      return {
-        //client_locations: []
+      return {        
       }
     },
     props: [
@@ -75,16 +83,9 @@
       isDeleted() {
         //return this.location.deleted
       }
-      //show() {
-      //  this.$router.push(
-      //    {
-      //      name: 'location-show', 
-      //      params: { 
-      //        id: location.id 
-      //      }
-      //    }
-      //  )
-      //}
+    },
+    components: {
+      'map-component': require('components/Gmaps/MapComponent.vue').default
     }
   }
 </script>

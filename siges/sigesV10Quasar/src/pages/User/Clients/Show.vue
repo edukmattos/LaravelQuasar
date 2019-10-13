@@ -111,7 +111,7 @@
             <div class>
               <q-list separator>         
                 <user-company-client-location-expansible-component
-                  v-for="(location, key) in getAuthUserCompanyClientLocationsFiltered"
+                  v-for="(location, key) in getAuthUserCompanyClientLocationsFiltered(clientKey)"
                   :key="key"
                   :location="location"
                   :id="id"
@@ -146,6 +146,7 @@
       return {
         tab: 'one',
         id: '0',
+        clientKey: '',
         formCompanyClientNewEdit: false,
         deleted: false
       }
@@ -153,6 +154,7 @@
     created() {
       // 1. Capturar o id da Company
       this.id = this.$route.params.id
+      this.clientKey = this.$route.params.clientKey
       //let companyIn = this.getCompanyClientById(this.id)
       
       // 2. Atualiza a companyIn na store

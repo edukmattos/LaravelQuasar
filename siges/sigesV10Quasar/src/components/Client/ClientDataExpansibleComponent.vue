@@ -8,7 +8,7 @@
     switch-toggle-side
             
     v-show="!isDeleted()"
-    :to="{name: 'client-show', params: { id: client.id }}" 
+    :to="{name: 'client-show', params: { id: client.id, clientKey: clientKey }}" 
     class="bg-white">
     <template v-slot:header>
       <q-item-section>
@@ -135,7 +135,7 @@
     props: [
       'client',
       'id',
-      'index'
+      'clientKey'
     ],
     filters: {
       searchHighlight(value, search) {

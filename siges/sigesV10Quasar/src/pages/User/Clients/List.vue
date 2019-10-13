@@ -21,6 +21,7 @@
         <user-company-client-data-expansible-component
           v-for="(client, key) in getAuthUserCompanyClientsFiltered"
           :key="key"
+          :clientKey="key"
           :client="client"
           :id="client.id"
           @click="true">
