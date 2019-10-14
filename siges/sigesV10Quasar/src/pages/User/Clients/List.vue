@@ -2,17 +2,17 @@
   <q-page>
     <div class="row no-wrap shadow-1">
       <q-toolbar class="q-pa-xs bg-purple text-white">
+        <div class="col-6 q-mb-xs">
+          <company-clients-search-component />
+        </div>
+        <q-toolbar-title class="text-right">
+          {{ page().title }}
+        </q-toolbar-title>
         <q-btn flat round dense icon="assignment_ind">
           <q-badge floating color="red">
             {{ getAuthUserCompanyClientsFiltered.length }}
           </q-badge>
         </q-btn>
-        <q-toolbar-title>
-          {{ page().title }}
-        </q-toolbar-title>
-        <div class="col-6 q-mb-xs">
-          <company-clients-search-component />
-        </div>
       </q-toolbar>
     </div>
 

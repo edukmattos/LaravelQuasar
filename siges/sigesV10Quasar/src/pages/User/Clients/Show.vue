@@ -1,48 +1,20 @@
 <template>  
   <q-page>
-    <div class="row no-wrap shadow-1">
+    <div class="row no-wrap shadow-3">
       <q-toolbar class="bg-purple text-white">
-        <q-btn flat round dense icon="assignment_ind">
-        </q-btn>
-        <q-toolbar-title>
-          {{ page().title }}
-        </q-toolbar-title>
         <q-btn 
-          flat 
+          flat
           round 
           dense 
           to="/user/clients"
-          icon="search" 
+          icon="keyboard_backspace"
+          color="purple-1"
           class="q-mr-xs">
         </q-btn>
-        
-        <q-btn 
-          flat 
-          round 
-          dense 
-          icon="more_vert" 
-          class="q-mr-xs">
-          <q-menu 
-            transition-show="flip-right"
-            transition-hide="flip-left"
-            auto-close 
-            :offset="[60, 0]">
-              <q-list style="min-width: 100px">
-                <q-item clickable>
-                  <q-item-section side>
-                    <q-icon name="edit" color="primary" />
-                  </q-item-section>
-                  <q-item-section>Alterar</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section side>
-                    <q-icon name="delete" color="red" />
-                  </q-item-section>
-                  <q-item-section>Excluir</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-        </q-btn>
+        <q-space />
+        <q-toolbar-title class="text-right">
+          {{ page().title }}
+        </q-toolbar-title>
       </q-toolbar>
     </div>
     <q-list separator>         
@@ -76,12 +48,13 @@
                 <div class="col-11">
                   <company-clients-locations-search-component />
                 </div>
+                <q-space />
                 <div class="col-1 text-right">
                   <q-btn 
                     round 
                     dense 
                     icon="add" 
-                    class="q-pa-xs"
+                   
                     color="green">
                     <q-menu 
                       transition-show="flip-right"
