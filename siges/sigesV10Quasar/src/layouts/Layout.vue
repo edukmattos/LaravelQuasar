@@ -13,7 +13,9 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
         >
-          <q-icon name="img:assets/img/logo-light-icon.png" />
+          <q-icon>
+            <img src="~assets/img/logo-light-icon.png">
+          </q-icon>
         </q-btn>
         
         <q-toolbar-title 

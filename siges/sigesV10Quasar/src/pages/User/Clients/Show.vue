@@ -2,21 +2,24 @@
   <q-page>
     <div class="row no-wrap shadow-3">
       <q-toolbar class="bg-purple text-white">
+        <q-toolbar-title class="text-left">
+          {{ page().title }}
+        </q-toolbar-title>
+
+        <q-space />
+
         <q-btn 
           flat
           round 
           dense 
           to="/user/clients"
-          icon="keyboard_backspace"
+          icon="search"
           color="purple-1"
           class="q-mr-xs">
         </q-btn>
-        <q-space />
-        <q-toolbar-title class="text-right">
-          {{ page().title }}
-        </q-toolbar-title>
       </q-toolbar>
     </div>
+
     <q-list separator>         
       <user-company-client-data-expansible-component
         :client="getCompanyClientById(id)">
