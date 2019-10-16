@@ -45,10 +45,9 @@
         <q-separator />
 
         <q-tab-panels v-model="tab" animated class="bg-white">
-          
           <q-tab-panel name="locations" class="q-pa-xs">
-            <div v-if="!formCompanyClientLocationNew" class="row no-wrap shadow-1">
-              <q-toolbar class="bg-white text-white">
+            <div class="row no-wrap shadow-1">
+              <q-toolbar class="q-pa-xs bg-white text-white">
                 <div class="col-11">
                   <company-clients-locations-search-component />
                 </div>
@@ -57,16 +56,36 @@
                   <q-btn 
                     round 
                     dense 
-                    icon="add"                    
-                    color="green"
-                    @click="formCompanyClientLocationNew=true">
+                    icon="add" 
+                   
+                    color="green">
+                    <q-menu 
+                      transition-show="flip-right"
+                      transition-hide="flip-left"
+                      auto-close 
+                      :offset="[60, 0]">
+                        <q-list style="min-width: 100px">
+                          <q-item clickable>
+                            <q-item-section side>
+                              <q-icon name="edit" color="primary" />
+                            </q-item-section>
+                            <q-item-section>Alterar</q-item-section>
+                          </q-item>
+                          <q-item clickable>
+                            <q-item-section side>
+                              <q-icon name="delete" color="red" />
+                            </q-item-section>
+                            <q-item-section>Excluir</q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-menu>
                   </q-btn>
                 </div>
               </q-toolbar>
             </div>
             
-            
-              <q-list separator v-if="!formCompanyClientLocationNew">         
+            <div class>
+              <q-list separator>         
                 <user-company-client-location-expansible-component
                   v-for="(location, key) in getAuthUserCompanyClientLocationsFiltered(clientKey)"
                   :key="key"
@@ -75,9 +94,7 @@
                   @click="true">
                 </user-company-client-location-expansible-component>
               </q-list>
-           
-
-            <user-company-client-location-new-component v-if="formCompanyClientLocationNew"></user-company-client-location-new-component>     
+            </div>
 
           </q-tab-panel>
 
@@ -107,9 +124,7 @@
         id: '0',
         clientKey: '',
         formCompanyClientNewEdit: false,
-        deleted: false,
-        formCompanyClientLocationNew: false,
-        formCompanyClientLocationEdit: false
+        deleted: false
       }
     },
     created() {
@@ -210,7 +225,6 @@
     components: {
       'user-company-client-data-expansible-component': require('components/Client/ClientDataExpansibleComponent.vue').default,
       'user-company-client-location-expansible-component': require('components/Client/ClientLocationExpansibleComponent.vue').default,
-      'user-company-client-location-new-component': require('components/Client/Modals/ClientLocationNewEditComponent.vue').default,
       'company-client-new-edit-component': require('components/Client/Modals/ClientNewEditComponent.vue').default,
       'company-clients-locations-search-component': require('components/Client/Tools/SearchLocationsComponent.vue').default
     }

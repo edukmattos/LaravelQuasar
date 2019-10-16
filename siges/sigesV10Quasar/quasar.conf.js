@@ -89,7 +89,10 @@ module.exports = function (ctx) {
         'QPullToRefresh',
         'QMenu',
         'QExpansionItem',
-        'QToggle'
+        'QToggle',
+        'QStepper',
+        'QStep',
+        'QStepperNavigation'
       ],
 
       directives: [
