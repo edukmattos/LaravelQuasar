@@ -13,22 +13,41 @@
             icon="settings"
             :done="step > 1">
                 <gmap-autocomplete
-                    @place_changed="setPlace">
-                </gmap-autocomplete>
-                <button @click="addMarker">Localizar</button>
-                
-                <gmap-map
-                    :center="center"
-                    :zoom="12"
-                    style="width:100%;  height: 400px;"
-                >
-                    <gmap-marker
-                        :key="index"
-                        v-for="(m, index) in markers"
-                        :position="m.position"
-                        @click="center=m.position">
-                    </gmap-marker>
-                </gmap-map>
+                    :options="{            
+                        componentRestrictions: {'country': ['br']}
+                    }"
+                    @place_changed="setPlace"
+                    placeholder="Informar endereço"
+                    float-label="Infirmar endereço"
+                    size="sm"
+                    style="width: 100%">
+                    </gmap-autocomplete>
+                    <q-btn
+                    class="full-width"
+                    :label="btnSubmitLabelGMaps"
+                    glossy
+                    icon="gps_fixed"
+                    color="primary"
+                    align="center"
+                    size="md"
+                    @click="showMarker"
+                    />  
+
+                    <gmap-map
+                        :center="center"
+                        :zoom="17"
+                        style="width:100%;  height: 400px;">
+                        <gmap-marker
+                            :key="index"
+                            v-for="(m, index) in markers"
+                            :position="m.position"
+                            @position_changed="m.position=$event"
+                            @click="center=m.position"
+                            :draggable="true"
+                            @drag="getMarkerDragPosition($event)">
+                        </gmap-marker>
+                    </gmap-map>
+
                 {{ places }}
         </q-step>
 
@@ -136,6 +155,21 @@
         ],
         data() {
             return {
+                register: {
+                    clientCpfCnpj: '',
+                    clientName: '',
+                    clientAddress: '',
+                    clientBuilding: '',
+                    clientBuildingComments: '',
+                    clientNeighborhood: '',
+                    clientZipCode: '',
+                    clientCity: '',
+                    clientState: '', 
+                    clientPhone: '',
+                    clientMobile: '',
+                    clientEmail: '',
+                    clientComments: ''
+                },
                 btnSubmitLabel: "Salvar",
                 submiting: false,
                 btnCancelLabel: "Cancelar",
@@ -157,26 +191,51 @@
             setPlace(place) {
                 this.currentPlace = place;
             },
-            addMarker() {
+            getMarkerDragPosition (position) { 
+                const marker = {          
+                    lat: position.latLng.lat(),
+                    lng: position.latLng.lng()
+                }
+                
+                this.register.clientLat = marker.lat;
+                this.register.clientLng = marker.lng;
+                //console.log(this.register.clientLat, this.register.clientLng);
+            },
+            showMarker() {
                 if (this.currentPlace) {
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
                         lng: this.currentPlace.geometry.location.lng()
-                    };
-                    console.log(marker)
-                    this.markers.push({ position: marker });
-                    this.places.push(this.currentPlace);
-                    this.center = marker;
-                    this.currentPlace = null;
+                    }
+                this.register.clientLat = marker.lat;
+                this.register.clientLng = marker.lng;
+                this.register.clientAddress = this.currentPlace.address_components[1].short_name;
+                this.register.clientBuilding = this.currentPlace.address_components[0].short_name;
+                this.register.clientNeighborhood = this.currentPlace.address_components[2].long_name;
+                this.register.clientZipCode = this.currentPlace.address_components[6].long_name;
+                this.register.clientCity = this.currentPlace.address_components[3].long_name;
+                this.register.clientState = this.currentPlace.address_components[4].short_name;
+                
+                this.markers.push({ position: marker });
+                
+                this.center = marker;
+                this.places.push(this.currentPlace);
+                //this.currentPlace = null          
                 }
+            },
+            addMarker() {
+                this.places.push(this.currentPlace);
+                this.currentPlace = null;
             },
             geolocate() {
                 navigator.geolocation.getCurrentPosition(position => {
                     this.center = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
                     };
                 });
+                this.register.clientLat = center.lat;
+                this.register.clientLng = center.lng;
             },
 
 
