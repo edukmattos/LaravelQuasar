@@ -37,7 +37,7 @@
     </template>
     
     <q-card class="q-pa-xs">
-      <map-component 
+      <map-marker-component 
         :location="location"  
       />
 
@@ -85,7 +85,7 @@
       }
     },
     components: {
-      'map-component': require('components/Gmaps/MapComponent.vue').default
+      'map-marker-component': require('components/Gmaps/MapMarkerComponent.vue').default
     }
   }
 </script>

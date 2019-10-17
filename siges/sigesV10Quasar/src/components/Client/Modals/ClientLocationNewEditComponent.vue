@@ -1,133 +1,130 @@
 <template>
-    
-        <q-stepper
-            v-model="step"
-            ref="stepper"
-            vertical
-            color="primary"
-            animated
-            >            
-                <q-step
-                    :name="1"
-                    title="Localize Endereco"
-                    caption="Optional"
-                    icon="settings"
-                    :done="step > 1">
-                    For each ad campaign that you create, you can control how much you're willing to
-                    spend on clicks and conversions, which networks and geographical locations you want
-                    your ads to show on, and more.
-                </q-step>
+    <q-stepper
+        v-model="step"
+        ref="stepper"
+        vertical
+        color="primary"
+        animated
+        >            
+        <q-step
+            :name="1"
+            title="Localizar Endereco"
+            caption="Obrigatorio"
+            icon="settings"
+            :done="step > 1">
+                <gmap-autocomplete
+                    @place_changed="setPlace">
+                </gmap-autocomplete>
+                <button @click="addMarker">Localizar</button>
+                
+                <gmap-map
+                    :center="center"
+                    :zoom="12"
+                    style="width:100%;  height: 400px;"
+                >
+                    <gmap-marker
+                        :key="index"
+                        v-for="(m, index) in markers"
+                        :position="m.position"
+                        @click="center=m.position">
+                    </gmap-marker>
+                </gmap-map>
+                {{ places }}
+        </q-step>
 
-                <q-step
-                    :name="2"
-                    title="Create an ad group"
-                    caption="Optional"
-                    icon="create_new_folder"
-                    :done="step > 2">
-                    
-                        <form @submit.prevent="submitForm">
+        <q-step
+            :name="2"
+            title="Create an ad group"
+            caption="Optional"
+            icon="create_new_folder"
+            :done="step > 2">
+                <form @submit.prevent="submitForm">
+                    <form-input-text-component 
+                        id="full_name"
+                        textLabel="Nome/Razão Social"
+                        iconName="face"
+                        :clearable="false"
+                        :value.sync="clientToSubmit.full_name" 
+                        :error="errors.has('full_name')"
+                        :errorMessage="errors.first('full_name')"
+                        autofocus="true"
+                        class="row q-mb-sm"
+                    />
+                    <form-input-text-component 
+                        id="name"
+                        textLabel="Apelido/Nome Fantasia"
+                        iconName="face"
+                        :clearable="false"
+                        :value.sync="clientToSubmit.name" 
+                        :error="errors.has('name')"
+                        :errorMessage="errors.first('name')"
+                        class="row q-mb-sm"
+                    />
                             
-                            <form-input-text-component 
-                                id="full_name"
-                                textLabel="Nome/Razão Social"
-                                iconName="face"
-                                :clearable="false"
-                                :value.sync="clientToSubmit.full_name" 
-                                :error="errors.has('full_name')"
-                                :errorMessage="errors.first('full_name')"
-                                autofocus="true"
-                                class="row q-mb-sm"
-                            />
-                            <form-input-text-component 
-                                id="name"
-                                textLabel="Apelido/Nome Fantasia"
-                                iconName="face"
-                                :clearable="false"
-                                :value.sync="clientToSubmit.name" 
-                                :error="errors.has('name')"
-                                :errorMessage="errors.first('name')"
-                                class="row q-mb-sm"
-                            />
+                    <form-input-text-component 
+                        id="einssa"
+                        textLabel="CPF/CNPJ"
+                        iconName="fingerprint"
+                        :clearable="false"
+                        :value.sync="clientToSubmit.einssa" 
+                        :error="errors.has('einssa')"
+                        :errorMessage="errors.first('einssa')"
+                        class="row q-mb-sm"
+                    />
                             
-                            <form-input-text-component 
-                                id="einssa"
-                                textLabel="CPF/CNPJ"
-                                iconName="fingerprint"
-                                :clearable="false"
-                                :value.sync="clientToSubmit.einssa" 
-                                :error="errors.has('einssa')"
-                                :errorMessage="errors.first('einssa')"
-                                class="row q-mb-sm"
-                            />
+                    <form-input-text-component 
+                        id="mobile"
+                        textLabel="Celular"
+                        iconName="smartphone"
+                        :clearable="false"
+                        :mask="'## #####-####'"
+                        unmasked-value
+                        :value.sync="clientToSubmit.mobile" 
+                        :error="errors.has('mobile')"
+                        :errorMessage="errors.first('mobile')"
+                        class="row q-mb-sm"
+                    />
                             
-                            <form-input-text-component 
-                                id="mobile"
-                                textLabel="Celular"
-                                iconName="smartphone"
-                                :clearable="false"
-                                :mask="'## #####-####'"
-                                unmasked-value
-                                :value.sync="clientToSubmit.mobile" 
-                                :error="errors.has('mobile')"
-                                :errorMessage="errors.first('mobile')"
-                                class="row q-mb-sm"
-                            />
+                    <form-input-text-component 
+                        id="phone"
+                        textLabel="Telefone"
+                        iconName="phone"
+                        :clearable="false"
+                        :mask="'## ####-####'"
+                        :value.sync="clientToSubmit.phone" 
+                        :error="errors.has('phone')"
+                        :errorMessage="errors.first('phone')"
+                        class="row q-mb-sm"
+                    />
                             
-                            <form-input-text-component 
-                                id="phone"
-                                textLabel="Telefone"
-                                iconName="phone"
-                                :clearable="false"
-                                :mask="'## ####-####'"
-                                :value.sync="clientToSubmit.phone" 
-                                :error="errors.has('phone')"
-                                :errorMessage="errors.first('phone')"
-                                class="row q-mb-sm"
-                            />
-                            
-                            <form-input-email-component 
-                                id="email"
-                                textLabel="E-mail"
-                                iconName="mail"
-                                :clearable="false"
-                                :value.sync="clientToSubmit.email" 
-                                :error="errors.has('email')"
-                                :errorMessage="errors.first('email')"
-                                class="row q-mb-sm"
-                            />
-                            
-                        
-                            <q-separator />
+                    <form-input-email-component 
+                        id="email"
+                        textLabel="E-mail"
+                        iconName="mail"
+                        :clearable="false"
+                        :value.sync="clientToSubmit.email" 
+                        :error="errors.has('email')"
+                        :errorMessage="errors.first('email')"
+                        class="row q-mb-sm"
+                    />
+                
+                    <q-separator />
 
-                            <q-card-actions align="right">
-                                <q-btn 
-                                    :label="btnCancelLabel" 
-                                    color="negative" 
-                                    v-close-popup 
-                                    class="q-ml-sm" />
-                                <q-btn 
-                                    :label="btnSubmitLabel" 
-                                    :loading="submiting"
-                                    :disable="submiting" 
-                                    type="submit" 
-                                    color="primary"
-                                    class="q-ml-sm" />
-                            </q-card-actions>
-                        </form>
-                    
-                </q-step>
+                </form> 
+        </q-step>
 
-                <template v-slot:navigation>
-                    <q-stepper-navigation align="right">
-                        <q-btn @click="$refs.stepper.next()" color="primary" :label="step === 2 ? 'Salvar' : 'Avancar'" />
-                        <q-btn v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Voltar" class="q-ml-sm" />
-                    </q-stepper-navigation>
-                </template>
-        </q-stepper>
-    
+        <template v-slot:navigation>
+            <q-stepper-navigation align="right">
+                <q-btn @click="$refs.stepper.next()" color="primary" :label="step === 2 ? 'Salvar' : 'Avancar'" />
+                <q-btn v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Voltar" class="q-ml-sm" />
+            </q-stepper-navigation>
+        </template>
+    </q-stepper>
 </template>
 
 <script>
+    import * as VueGoogleMaps from 'vue2-google-maps'
+    
     import axios from 'axios'
     import { CONFIG } from '../../../config'
     import { mapActions } from 'vuex'
@@ -147,10 +144,42 @@
                 selectOptions: [],
                 filterOptions: [],
                 formAction: '',
-                step: 1
+                step: 1,
+
+                center: [],
+                markers: [],
+                places: [],
+                currentPlace: null
             }
         },
         methods: {
+            // receives a place object via the autocomplete component
+            setPlace(place) {
+                this.currentPlace = place;
+            },
+            addMarker() {
+                if (this.currentPlace) {
+                    const marker = {
+                        lat: this.currentPlace.geometry.location.lat(),
+                        lng: this.currentPlace.geometry.location.lng()
+                    };
+                    console.log(marker)
+                    this.markers.push({ position: marker });
+                    this.places.push(this.currentPlace);
+                    this.center = marker;
+                    this.currentPlace = null;
+                }
+            },
+            geolocate() {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.center = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                    };
+                });
+            },
+
+
             ...mapActions('clients', ['actAuthUserCompanyClientAdd']),
             ...mapActions('clients', ['actAuthUserCompanyClientUpdate']),
             submitForm() {
@@ -214,6 +243,7 @@
             }
         },
         components: {
+            'map-marker-component': require('components/Gmaps/MapMarkerComponent.vue').default,
             'modal-header-component': require('components/Client/Modals/Shared/HeaderComponent.vue').default,
             'form-input-email-component': require('components/Forms/InputEmailComponent.vue').default,
             'form-input-text-component': require('components/Forms/InputTextComponent.vue').default
@@ -238,7 +268,8 @@
             this.headerTitle = this.formAction == 'new' ? 'Novo Endereco' : 'Editar Endereco'
         },
         mounted() {
-           axios
+            this.geolocate(),
+            axios
                 .get(CONFIG.api_url + '/businessTypes/autocomplete')
                 .then((results) => {
                     this.selectOptions = results.data;
