@@ -13,42 +13,26 @@
             icon="settings"
             :done="step > 1">
                 <gmap-autocomplete
-                    :options="{            
-                        componentRestrictions: {'country': ['br']}
-                    }"
                     @place_changed="setPlace"
                     placeholder="Informar endereço"
-                    float-label="Infirmar endereço"
-                    size="sm"
-                    style="width: 100%">
-                    </gmap-autocomplete>
-                    <q-btn
-                    class="full-width"
+                    class="q-mb-xs full-width">
+                </gmap-autocomplete>
+                
+                <q-btn
                     :label="btnSubmitLabelGMaps"
-                    glossy
+                    flat
                     icon="gps_fixed"
                     color="primary"
-                    align="center"
-                    size="md"
+                    class="q-pa-xs"
                     @click="showMarker"
-                    />  
+                />  
 
-                    <gmap-map
-                        :center="center"
-                        :zoom="17"
-                        style="width:100%;  height: 400px;">
-                        <gmap-marker
-                            :key="index"
-                            v-for="(m, index) in markers"
-                            :position="m.position"
-                            @position_changed="m.position=$event"
-                            @click="center=m.position"
-                            :draggable="true"
-                            @drag="getMarkerDragPosition($event)">
-                        </gmap-marker>
-                    </gmap-map>
+                <gmap-marker-component 
+                    :location="center"  
+                    :center="center"
+                    :markerDraggable="true">
+                </gmap-marker-component>
 
-                {{ places }}
         </q-step>
 
         <q-step
@@ -132,6 +116,8 @@
                 </form> 
         </q-step>
 
+        {{ places }}
+
         <template v-slot:navigation>
             <q-stepper-navigation align="right">
                 <q-btn @click="$refs.stepper.next()" color="primary" :label="step === 2 ? 'Salvar' : 'Avancar'" />
@@ -180,6 +166,7 @@
                 formAction: '',
                 step: 1,
 
+                btnSubmitLabelGMaps: '',
                 center: [],
                 markers: [],
                 places: [],
@@ -196,10 +183,11 @@
                     lat: position.latLng.lat(),
                     lng: position.latLng.lng()
                 }
-                
+                console.log(marker)
+
                 this.register.clientLat = marker.lat;
                 this.register.clientLng = marker.lng;
-                //console.log(this.register.clientLat, this.register.clientLng);
+                console.log(this.register.clientLat, this.register.clientLng);
             },
             showMarker() {
                 if (this.currentPlace) {
@@ -302,7 +290,7 @@
             }
         },
         components: {
-            'map-marker-component': require('components/Gmaps/MapMarkerComponent.vue').default,
+            'gmap-marker-component': require('components/Gmaps/MapMarkerComponent.vue').default,
             'modal-header-component': require('components/Client/Modals/Shared/HeaderComponent.vue').default,
             'form-input-email-component': require('components/Forms/InputEmailComponent.vue').default,
             'form-input-text-component': require('components/Forms/InputTextComponent.vue').default

@@ -17,8 +17,14 @@
   >
     <GmapMarker
       :position="google && new google.maps.LatLng(+location.lat, +location.lng)"
+      :draggable="markerDraggable"
     />
+    <GmapInfoWindow :opened:"false">
+                I can use <b>HTML</b> here and expressions too !<br>
+                I am not bound to any markers. I'm freeee.
+            </GmapInfoWindow>
     <GmapMarker/>
+
   </GmapMap>
 </template>
 
@@ -31,7 +37,8 @@
       }
     },
     props: [
-      'location'
+      'location',
+      'markerDraggable'
     ],
     computed: {
       google: gmapApi
